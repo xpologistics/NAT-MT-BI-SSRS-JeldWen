@@ -60,6 +60,7 @@ DECLARE @DomainName VARCHAR(10)=@Client
 IF OBJECT_ID( 'tempdb.dbo.#ShipmentsOfInterest' ) IS NOT NULL DROP TABLE #ShipmentsOfInterest
 
 SELECT S.ShipmentId AS ShipmentID
+	   , S.ShipmentNumber 
 	   , CAST (GETDATE() AS DATE) AS InvoiceDate
 	   , S.ChargeableWeight [Weight]
 	   , S.TotalShipUnitCount [Pieces]
@@ -99,7 +100,7 @@ GROUP BY SI.ShipmentID, SO.OrderTypeId
 IF OBJECT_ID('tempdb.dbo.#SourceFinal') IS NOT NULL DROP TABLE #SourceFinal
 
 SELECT 
-   SI.ShipmentID
+   SI.ShipmentNumber as ShipmentID
    , SI.InvoiceDate
    , SI.[Weight]
    , SI.Pieces
@@ -179,7 +180,7 @@ GO</CommandText>
                   <Width>1.29123in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>10.89972in</Width>
+                  <Width>13.41121in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -237,9 +238,15 @@ GO</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
+                                  <Value xml:space="preserve"> </Value>
+                                  <Style>
+                                    <Color>DimGray</Color>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
                                   <Value>=Globals!ReportName</Value>
                                   <Style>
-                                    <FontSize>18pt</FontSize>
+                                    <FontSize>20pt</FontSize>
                                     <Color>DimGray</Color>
                                   </Style>
                                 </TextRun>
@@ -262,6 +269,58 @@ GO</CommandText>
                     </TablixCell>
                   </TablixCells>
                 </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>As of: </Value>
+                                  <Style>
+                                    <Color>DimGray</Color>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Label>ExecutionTime</Label>
+                                  <Value>=First(Fields!ExecutionTimeInEST.Value, "Clients")</Value>
+                                  <Style>
+                                    <Color>DimGray</Color>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> (EST)</Value>
+                                  <Style>
+                                    <Color>DimGray</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>3</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                  </TablixCells>
+                </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
@@ -274,13 +333,15 @@ GO</CommandText>
             <TablixRowHierarchy>
               <TablixMembers>
                 <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
             <RepeatRowHeaders>true</RepeatRowHeaders>
             <DataSetName>ARBilling</DataSetName>
             <PageName>Shipments</PageName>
-            <Height>0.35in</Height>
-            <Width>12.59416in</Width>
+            <Left>0.00001in</Left>
+            <Height>0.6in</Height>
+            <Width>15.10565in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1246,7 +1307,7 @@ GO</CommandText>
             </PageBreak>
             <PageName>Report Info</PageName>
             <Top>8.40044in</Top>
-            <Left>0.01346in</Left>
+            <Left>0.01347in</Left>
             <Height>4.42291in</Height>
             <Width>13.44637in</Width>
             <ZIndex>1</ZIndex>
@@ -1265,7 +1326,7 @@ GO</CommandText>
                   <Width>1.69444in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.91573in</Width>
+                  <Width>1.13795in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1in</Width>
@@ -1283,16 +1344,16 @@ GO</CommandText>
                   <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.47222in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.98399in</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>3.15522in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.64583in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1315,7 +1376,9 @@ GO</CommandText>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox18</rd:DefaultName>
@@ -1325,6 +1388,7 @@ GO</CommandText>
                               <Style>Solid</Style>
                             </Border>
                             <BackgroundColor>Black</BackgroundColor>
+                            <VerticalAlign>Top</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1410,7 +1474,7 @@ GO</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>weight</Value>
+                                  <Value>Weight</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                     <Color>White</Color>
@@ -1691,7 +1755,9 @@ GO</CommandText>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>ShipmentID</rd:DefaultName>
@@ -1718,10 +1784,14 @@ GO</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!InvoiceDate.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>d</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>InvoiceDate</rd:DefaultName>
@@ -1751,7 +1821,9 @@ GO</CommandText>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Pieces</rd:DefaultName>
@@ -1781,7 +1853,9 @@ GO</CommandText>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>weight</rd:DefaultName>
@@ -1811,7 +1885,9 @@ GO</CommandText>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>GL_Code</rd:DefaultName>
@@ -1841,7 +1917,9 @@ GO</CommandText>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Company</rd:DefaultName>
@@ -1871,7 +1949,9 @@ GO</CommandText>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Origin_Zip</rd:DefaultName>
@@ -1901,7 +1981,9 @@ GO</CommandText>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Destination_Zip</rd:DefaultName>
@@ -1931,7 +2013,9 @@ GO</CommandText>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Stop_Name</rd:DefaultName>
@@ -1961,7 +2045,9 @@ GO</CommandText>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Carrier</rd:DefaultName>
@@ -1991,7 +2077,9 @@ GO</CommandText>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Estimated_Freight</rd:DefaultName>
@@ -2038,9 +2126,9 @@ GO</CommandText>
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>ARBilling</DataSetName>
-            <Top>0.56472in</Top>
+            <Top>0.59944in</Top>
             <Height>0.5in</Height>
-            <Width>14.59416in</Width>
+            <Width>15.10566in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -2056,7 +2144,7 @@ GO</CommandText>
           </Border>
         </Style>
       </Body>
-      <Width>24.13994in</Width>
+      <Width>24.13995in</Width>
       <Page>
         <PageFooter>
           <Height>0.01042in</Height>
