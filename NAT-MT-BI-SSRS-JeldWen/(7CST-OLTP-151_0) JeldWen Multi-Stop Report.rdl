@@ -373,6 +373,7 @@ ORDER BY tc.ClientName</CommandText>
         <CommandText>/*
 	Updates:
 		20230302:MTBIE-3150 Added Inner Join with [UsrRpt].[SourceLocationDetail] to get SourceName only for 4 origin locations - Milan TN - Mason City IA - Ontario CA - Easton PA--Nikita S.
+20230530: MTBIE-3466 Rimi Prasad: added changes for jeldwen
 */
 SELECT 'ALL' AS SourceName
 UNION ALL
@@ -5787,9 +5788,10 @@ ORDER BY SourceName</CommandText>
     <ReportParameter Name="Client">
       <DataType>String</DataType>
       <DefaultValue>
-        <Values>
-          <Value>MENLO/A028</Value>
-        </Values>
+        <DataSetReference>
+          <DataSetName>Clients</DataSetName>
+          <ValueField>DomainName</ValueField>
+        </DataSetReference>
       </DefaultValue>
       <Prompt>Client</Prompt>
       <Hidden>true</Hidden>
